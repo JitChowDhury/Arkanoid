@@ -44,6 +44,6 @@ Control the paddle, bounce the ball, and break all the bricks to win!
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/Arkanoid.git
+git clone https://github.com/JitChowDhury/Arkanoid.git
 cd Arkanoid
 ```
