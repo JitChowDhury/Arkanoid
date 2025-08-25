@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 # Project name and language
-project(Minesweeper LANGUAGES CXX)
+project(Arkanoid LANGUAGES CXX)
 
 # Where to put the final program
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -23,26 +23,26 @@ file(GLOB SRC_FILES src/*.cpp)
 file(GLOB HEADER_FILES include/*.h)
 
 # ✅ Define the executable (use your project name here)
-add_executable(minesweeper ${SRC_FILES} ${HEADER_FILES})
+add_executable(Arkanoid ${SRC_FILES} ${HEADER_FILES})
 
 # Include and C++ standard
-target_include_directories(minesweeper PRIVATE include)
-target_compile_features(minesweeper PRIVATE cxx_std_17)
+target_include_directories(Arkanoid PRIVATE include)
+target_compile_features(Arkanoid PRIVATE cxx_std_17)
 
 # Link SFML
-target_link_libraries(minesweeper PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(Arkanoid PRIVATE sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
 # Copy SFML DLLs after build (Windows only)
 if(WIN32)
-    add_custom_command(TARGET minesweeper POST_BUILD
+    add_custom_command(TARGET Arkanoid POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        $<TARGET_FILE_DIR:sfml-graphics> $<TARGET_FILE_DIR:minesweeper>
+        $<TARGET_FILE_DIR:sfml-graphics> $<TARGET_FILE_DIR:Arkanoid>
     )
 endif()
 
 # Compiler warnings
 if(MSVC)
-    target_compile_options(minesweeper PRIVATE /W4)
+    target_compile_options(Arkanoid PRIVATE /W4)
 else()
-    target_compile_options(minesweeper PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_options(Arkanoid PRIVATE -Wall -Wextra -Wpedantic)
 endif()
