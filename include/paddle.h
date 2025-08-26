@@ -7,5 +7,6 @@ private:
 	sf::Sprite paddleSprite;
 public:
 	Paddle(sf::RenderWindow& window);
+	void HandleEvents(float dt);
 	void Render(sf::RenderWindow& window);
 };

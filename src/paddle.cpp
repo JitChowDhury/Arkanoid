@@ -28,6 +28,18 @@ Paddle::Paddle(sf::RenderWindow& window)
 	paddleSprite.setPosition(x, y);
 }
 
+void Paddle::HandleEvents(float dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		paddleSprite.move(400.f * dt, 0.f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		paddleSprite.move(-400.f * dt, 0.f);
+	}
+}
+
 void Paddle::Render(sf::RenderWindow& window)
 {
 	window.draw(paddleSprite);

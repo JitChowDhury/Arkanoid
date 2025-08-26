@@ -1,12 +1,14 @@
 #include "Game.h"
 
-Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window)
+Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f)
 {
-	
+	window.setFramerateLimit(60);
 }
 
 void Game::Update()
 {
+	deltaTime = clock.restart().asSeconds();
+	paddle.HandleEvents(deltaTime);
 }
 
 void Game::HandleEvent()
@@ -18,6 +20,7 @@ void Game::HandleEvent()
 		{
 			window.close();
 		}
+	
 	}
 }
 
