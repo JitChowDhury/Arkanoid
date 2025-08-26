@@ -8,5 +8,6 @@ private:
 public:
 	Paddle(sf::RenderWindow& window);
 	void HandleEvents(float dt);
+	void Update(int windowWidth);
 	void Render(sf::RenderWindow& window);
 };

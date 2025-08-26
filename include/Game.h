@@ -10,6 +10,10 @@ private:
 	float deltaTime;
 	sf::RenderWindow window;
 	sf::Clock clock;
+
+	sf::RectangleShape overlay;
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroudSprite;
 	Paddle paddle;
 	
 public:

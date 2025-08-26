@@ -40,6 +40,14 @@ void Paddle::HandleEvents(float dt)
 	}
 }
 
+void Paddle::Update(int windowWidth)
+{
+	sf::Vector2f pos = paddleSprite.getPosition();
+	float width = paddleSprite.getGlobalBounds().width;
+	if (pos.x < 5)paddleSprite.setPosition(5, pos.y);
+	if (pos.x + width > windowWidth - 5) paddleSprite.setPosition(windowWidth - 5 - width, pos.y);
+}
+
 void Paddle::Render(sf::RenderWindow& window)
 {
 	window.draw(paddleSprite);
