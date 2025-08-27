@@ -13,6 +13,6 @@ public:
 	void Update(int windowWidth);
 	void Render(sf::RenderWindow& window);
 	sf::Vector2f GetPosition() const;
-	sf::FloatRect getGlobalBounds() const;
+	sf::FloatRect GetGlobalBounds() const;
 
 };

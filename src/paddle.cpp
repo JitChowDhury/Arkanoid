@@ -64,7 +64,7 @@ sf::Vector2f Paddle::GetPosition() const
 	return startPosition;
 }
 
-sf::FloatRect Paddle::getGlobalBounds() const
+sf::FloatRect Paddle::GetGlobalBounds() const
 {
 	return paddleSprite.getGlobalBounds();
 }

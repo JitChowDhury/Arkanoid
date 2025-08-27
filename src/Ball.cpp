@@ -2,7 +2,7 @@
 #include "Ball.h"
 
 
-Ball::Ball(const Paddle& paddle):paddle(paddle)
+Ball::Ball(const Paddle& paddle):paddle(paddle),speed(2.f)
 {
 	if (!ballTexture.loadFromFile("assets/textures/ball.png"))
 	{
@@ -22,7 +22,7 @@ Ball::Ball(const Paddle& paddle):paddle(paddle)
 	);
 
 	sf::Vector2f paddlePos = paddle.GetPosition();
-	sf::FloatRect paddleBounds = paddle.getGlobalBounds(); 
+	sf::FloatRect paddleBounds = paddle.GetGlobalBounds();
 
 	float paddleCenterX = paddlePos.x + paddleBounds.width / 2.f;
 	float paddleTopY = paddlePos.y;
@@ -39,7 +39,7 @@ Ball::Ball(const Paddle& paddle):paddle(paddle)
 
 void Ball::Update(float dt)
 {
-	ballSprite.move(ballVelocity * dt);
+	ballSprite.move(ballVelocity *speed* dt);
 	sf::FloatRect ballBounds = ballSprite.getGlobalBounds();
 	if (ballBounds.left < 0) {
 		ballVelocity.x = std::abs(ballVelocity.x); // Bounce right
@@ -53,6 +53,12 @@ void Ball::Update(float dt)
 	if (ballBounds.top + ballBounds.height > 768) {
 		ballSprite.setPosition(ballStartPos); // Reset
 		ballVelocity = sf::Vector2f(-150.f, -150.f);
+	}
+
+	if (ballSprite.getGlobalBounds().intersects(paddle.GetGlobalBounds()))
+	{
+		ballVelocity.y = -std::abs(ballVelocity.y);
+
 	}
 }
 
