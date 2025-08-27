@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f)
+Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f),ball(paddle)
 {
 	window.setFramerateLimit(60);
 	if (!backgroundTexture.loadFromFile("assets/textures/background.png"))
@@ -10,6 +10,7 @@ Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle
 	backgroudSprite.setTexture(backgroundTexture);
 	sf::Vector2u textureSize = backgroundTexture.getSize();
 	sf::Vector2u windowSize = window.getSize();
+	
 
 	
 	float scaleX = static_cast<float>(windowSize.x) / textureSize.x;
@@ -26,6 +27,7 @@ void Game::Update()
 	deltaTime = clock.restart().asSeconds();
 	paddle.HandleEvents(deltaTime);
 	paddle.Update(WINDOW_WIDTH);
+	ball.Update(deltaTime);
 }
 
 void Game::HandleEvent()
@@ -47,6 +49,7 @@ void Game::Render()
 	window.draw(backgroudSprite);
 	window.draw(overlay);
 	paddle.Render(window);
+	ball.Render(window);
 	window.display();
 }
 

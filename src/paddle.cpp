@@ -1,6 +1,7 @@
 #include<iostream>
 #include "paddle.h"
 
+
 Paddle::Paddle(sf::RenderWindow& window)
 {
 	if (!paddleTexture.loadFromFile("assets/textures/player.png"))
@@ -14,6 +15,7 @@ Paddle::Paddle(sf::RenderWindow& window)
 
 	float scaleX = desiredWidth / paddleTexture.getSize().x;
 	float scaleY = desiredHeight / paddleTexture.getSize().y;
+	
 
 	paddleSprite.setScale(scaleX, scaleY);
 
@@ -26,6 +28,8 @@ Paddle::Paddle(sf::RenderWindow& window)
 	float y = window.getSize().y - paddleHeight - 20.f; // 20px gap from bottom
 
 	paddleSprite.setPosition(x, y);
+	startPosition = sf::Vector2f(x, y);
+	std::cout << x << " " << y << std::endl;
 }
 
 void Paddle::HandleEvents(float dt)
@@ -40,6 +44,8 @@ void Paddle::HandleEvents(float dt)
 	}
 }
 
+
+
 void Paddle::Update(int windowWidth)
 {
 	sf::Vector2f pos = paddleSprite.getPosition();
@@ -51,4 +57,14 @@ void Paddle::Update(int windowWidth)
 void Paddle::Render(sf::RenderWindow& window)
 {
 	window.draw(paddleSprite);
+}
+
+sf::Vector2f Paddle::GetPosition() const
+{
+	return startPosition;
+}
+
+sf::FloatRect Paddle::getGlobalBounds() const
+{
+	return paddleSprite.getGlobalBounds();
 }

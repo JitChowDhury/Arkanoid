@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "paddle.h"
+#include "Ball.h"
 
 class Game
 {
@@ -15,6 +16,7 @@ private:
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroudSprite;
 	Paddle paddle;
+	Ball ball;
 	
 public:
 	Game();
