@@ -10,6 +10,7 @@ private:
 	sf::Texture ballTexture;
 	sf::Sprite ballSprite;
 	sf::Vector2f ballVelocity;
+	sf::Vector2f ballStartPos;
 	const Paddle& paddle;
 
 public:
