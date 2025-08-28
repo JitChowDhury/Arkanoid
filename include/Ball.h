@@ -18,6 +18,8 @@ public:
 	Ball(const Paddle& paddle);
 	void Update(float dt);
 	void Render(sf::RenderWindow& window);
+	sf::FloatRect GetBounds();
+	sf::Vector2f GetVelocity();
 	
 
 };

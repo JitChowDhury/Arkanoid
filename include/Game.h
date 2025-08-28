@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "paddle.h"
 #include "Ball.h"
+#include "Brick.h"
 
 class Game
 {
@@ -17,6 +19,7 @@ private:
 	sf::Sprite backgroudSprite;
 	Paddle paddle;
 	Ball ball;
+	std::vector<Brick> bricks;
 	
 public:
 	Game();
@@ -24,5 +27,6 @@ public:
 	void HandleEvent();
 	void Render();
 	void Run();
+	void initializeBricks(bool useFullSize);
 
 };

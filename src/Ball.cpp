@@ -67,3 +67,13 @@ void Ball::Render(sf::RenderWindow& window)
 	window.draw(ballSprite);
 }
 
+sf::FloatRect Ball::GetBounds()
+{
+	return ballSprite.getGlobalBounds();
+}
+
+sf::Vector2f Ball::GetVelocity()
+{
+	return ballVelocity;
+}
+
