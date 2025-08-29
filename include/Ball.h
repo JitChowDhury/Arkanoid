@@ -16,10 +16,11 @@ private:
 
 public:
 	Ball(const Paddle& paddle);
-	void Update(float dt);
+	void Update(float dt, int& lives);
 	void Render(sf::RenderWindow& window);
 	sf::FloatRect GetBounds();
 	sf::Vector2f GetVelocity();
+	void SetVelocity(const sf::Vector2f& v);
 	
 
 };

@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f),ball(paddle)
+Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f),ball(paddle),score(0),lives(3),state(State::PLAYING)
 {
 	window.setFramerateLimit(60);
 	if (!backgroundTexture.loadFromFile("assets/textures/background.png"))
@@ -21,7 +21,7 @@ Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle
 	overlay.setSize((sf::Vector2f)window.getSize());
 	overlay.setFillColor(sf::Color(0, 0, 0, 150));
 
-	initializeBricks(false);
+	InitializeBricks(false);
 }
 
 void Game::Update()
@@ -29,18 +29,37 @@ void Game::Update()
 	deltaTime = clock.restart().asSeconds();
 	paddle.HandleEvents(deltaTime);
 	paddle.Update(WINDOW_WIDTH);
-	ball.Update(deltaTime);
+	ball.Update(deltaTime,lives);
 
 	for (auto& brick : bricks)
 	{
 		if (brick.IsActive() && ball.GetBounds().intersects(brick.GetBounds()))
 		{
 			brick.Destroy();
+			score += 10;
 			sf::Vector2f& velocity = ball.GetVelocity();
 			velocity.y = -velocity.y;
+			ball.SetVelocity(velocity);
 
 			break;
 		}
+	}
+	bool allBrickIsDestroyed = true;
+	for (const auto& brick : bricks)
+	{
+		if (brick.IsActive())
+		{
+			allBrickIsDestroyed = false;
+			break;
+		}
+	}
+	if (allBrickIsDestroyed)
+	{
+		state = State::LOST;
+	}
+	if (lives <= 0)
+	{
+		state = State::WON;
 	}
 }
 
@@ -83,7 +102,17 @@ void Game::Run()
 	}
 }
 
-void Game::initializeBricks(bool useFullSize) {
+int Game::GetScore() const
+{
+	 return score; 
+}
+
+State Game::GetGameState() const
+{
+	return State();
+}
+
+void Game::InitializeBricks(bool useFullSize) {
 	bricks.clear();
 	int rows = useFullSize ? 3 : 8;
 	int cols = useFullSize ? 2 : 7;

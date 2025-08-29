@@ -37,7 +37,7 @@ Ball::Ball(const Paddle& paddle):paddle(paddle),speed(2.f)
 
 
 
-void Ball::Update(float dt)
+void Ball::Update(float dt, int& lives)
 {
 	ballSprite.move(ballVelocity *speed* dt);
 	sf::FloatRect ballBounds = ballSprite.getGlobalBounds();
@@ -52,12 +52,16 @@ void Ball::Update(float dt)
 	}
 	if (ballBounds.top + ballBounds.height > 768) {
 		ballSprite.setPosition(ballStartPos); // Reset
+		lives--;
 		ballVelocity = sf::Vector2f(-150.f, -150.f);
 	}
 
 	if (ballSprite.getGlobalBounds().intersects(paddle.GetGlobalBounds()))
 	{
 		ballVelocity.y = -std::abs(ballVelocity.y);
+		float hitPoint = (ballBounds.left + ballBounds.width / 2) -
+			(paddle.GetGlobalBounds().left + paddle.GetGlobalBounds().width / 2);
+		ballVelocity.x = hitPoint * 2.f;
 
 	}
 }
@@ -75,5 +79,10 @@ sf::FloatRect Ball::GetBounds()
 sf::Vector2f Ball::GetVelocity()
 {
 	return ballVelocity;
+}
+
+void Ball::SetVelocity(const sf::Vector2f& v)
+{
+	ballVelocity = v;
 }
 
