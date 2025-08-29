@@ -12,6 +12,7 @@ private:
 	const unsigned int WINDOW_WIDTH{ 1024 };
 	const unsigned int WINDOW_HEIGHT{ 768 };
 	float deltaTime;
+	float scrollSpeed;
 	int score;
 	int lives;
 	sf::RenderWindow window;
@@ -20,6 +21,11 @@ private:
 	sf::RectangleShape overlay;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroudSprite;
+	sf::Sprite backgroudSprite2;
+	sf::Font font;
+	sf::Text scoreText;
+	sf::Text livesText;
+	sf::Text gameOverText;
 
 	
 	Paddle paddle;
