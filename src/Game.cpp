@@ -24,7 +24,7 @@ Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle
 	overlay.setSize((sf::Vector2f)window.getSize());
 	overlay.setFillColor(sf::Color(0, 0, 0, 150));
 
-	InitializeBricks(false);
+	InitializeBricks();
 
 	if (!font.loadFromFile("assets/fonts/VT323-Regular.ttf"))
 	{
@@ -69,8 +69,8 @@ void Game::Update()
 	{
 		if (brick.IsActive() && ball.GetBounds().intersects(brick.GetBounds()))
 		{
-			brick.Destroy();
-			score += 10;
+			score += brick.hit();
+			
 			sf::Vector2f& velocity = ball.GetVelocity();
 			velocity.y = -velocity.y;
 			ball.SetVelocity(velocity);
@@ -162,19 +162,21 @@ State Game::GetGameState() const
 	return State();
 }
 
-void Game::InitializeBricks(bool useFullSize) {
+void Game::InitializeBricks() {
 	bricks.clear();
-	int rows = useFullSize ? 3 : 8;
-	int cols = useFullSize ? 2 : 7;
-	float width = useFullSize ? 384.f : 128.f;
-	float height = useFullSize ? 128.f : 48.f;
-	float scaleX = useFullSize ? 1.f : 0.333f;
-	float scaleY = useFullSize ? 1.f : 0.375f;
+	int rows =  8;
+	int cols =  7;
+	float width =  128.f;
+	float height = 48.f;
+	float scaleX = 0.333f;
+	float scaleY =  0.375f;
 	float offsetX = (1024.f - (cols * (width + 5.f) - 5.f)) / 2;
 	for (int row = 0; row < rows; ++row) {
 		for (int col = 0; col < cols; ++col) {
-			bricks.emplace_back(col * (width + 5.f) + offsetX, row * (height + 5.f),
+			Brick::BrickType type = (row >= 6) ? Brick::BrickType::Strong : Brick::BrickType::Standard;
+			bricks.emplace_back(col * (width + 5.f) + offsetX, row * (height + 5.f),type,
 				width, height, true, scaleX, scaleY);
+
 		}
 	}
 }

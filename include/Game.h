@@ -15,6 +15,7 @@ private:
 	float scrollSpeed;
 	int score;
 	int lives;
+	
 	sf::RenderWindow window;
 	sf::Clock clock;
 
@@ -39,7 +40,7 @@ public:
 	void HandleEvent();
 	void Render();
 	void Run();
-	void InitializeBricks(bool useFullSize);
+	void InitializeBricks();
 	int GetScore() const;
 	State GetGameState() const;
 
