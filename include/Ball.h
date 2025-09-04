@@ -8,19 +8,26 @@ class Ball
 {
 private:
 	float speed;
-	sf::Texture ballTexture;
+	static sf::Texture ballTexture;
 	sf::Sprite ballSprite;
 	sf::Vector2f ballVelocity;
 	sf::Vector2f ballStartPos;
-	const Paddle& paddle;
+	Paddle* paddle;
+	bool active;
 
 public:
-	Ball(const Paddle& paddle);
+	Ball(Paddle* paddle);
+
+
 	void Update(float dt, int& lives);
-	void Render(sf::RenderWindow& window);
+	void Render(sf::RenderWindow& window) const;
 	sf::FloatRect GetBounds();
-	sf::Vector2f GetVelocity();
+	//sf::Vector2f GetVelocity();
+
+	void Reset();
+	bool IsActive() const { return active; }
+	sf::Vector2f& GetVelocity() { return ballVelocity; }
+	const sf::Vector2f& GetVelocity() const { return ballVelocity; }
 	void SetVelocity(const sf::Vector2f& v);
-	
 
 };

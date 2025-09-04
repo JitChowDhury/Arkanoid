@@ -8,6 +8,10 @@ Paddle::Paddle(sf::RenderWindow& window)
 	{
 		std::cout << "Error Loading Paddle Sprite" << std::endl;
 	}
+	if (!paddleLargeTexture.loadFromFile("assets/textures/paddleLarge.png"))
+	{
+		std::cout << "Error Loading Paddle Sprite" << std::endl;
+	}
 	paddleSprite.setTexture(paddleTexture);
 	
 	float desiredWidth = 170.f;  
@@ -18,6 +22,7 @@ Paddle::Paddle(sf::RenderWindow& window)
 	
 
 	paddleSprite.setScale(scaleX, scaleY);
+	std::cout << "Scale: " << scaleX << " " << scaleY;
 
 	//acutual width after scale
 	float paddleWidth = paddleTexture.getSize().x * scaleX;
@@ -36,11 +41,11 @@ void Paddle::HandleEvents(float dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		paddleSprite.move(400.f * dt, 0.f);
+		paddleSprite.move(700.f * dt, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		paddleSprite.move(-400.f * dt, 0.f);
+		paddleSprite.move(-700.f * dt, 0.f);
 	}
 }
 
@@ -57,6 +62,7 @@ void Paddle::Update(int windowWidth)
 void Paddle::Render(sf::RenderWindow& window)
 {
 	window.draw(paddleSprite);
+	
 }
 
 sf::Vector2f Paddle::GetPosition() const
@@ -67,4 +73,14 @@ sf::Vector2f Paddle::GetPosition() const
 sf::FloatRect Paddle::GetGlobalBounds() const
 {
 	return paddleSprite.getGlobalBounds();
+}
+
+sf::Vector2f Paddle::GetScale()
+{
+	return	paddleSprite.getScale();
+}
+
+void Paddle::SetSprite()
+{
+	paddleSprite.setTexture(paddleLargeTexture, true);
 }

@@ -1,7 +1,8 @@
 #include "Game.h"
 
-Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f),ball(paddle),score(0),lives(100),state(State::PLAYING),scrollSpeed(100.f)
+Game::Game():window(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT),"Arkanoid"),paddle(window),deltaTime(0.f),score(0),lives(5),state(State::PLAYING),scrollSpeed(100.f)
 {
+	balls.emplace_back(&paddle);
 	window.setFramerateLimit(60);
 	if (!backgroundTexture.loadFromFile("assets/textures/background.png"))
 	{
@@ -63,20 +64,50 @@ void Game::Update()
 
 	paddle.HandleEvents(deltaTime);
 	paddle.Update(WINDOW_WIDTH);
-	ball.Update(deltaTime,lives);
-
-	for (auto& brick : bricks)
-	{
-		if (brick.IsActive() && ball.GetBounds().intersects(brick.GetBounds()))
-		{
-			score += brick.hit();
-			
-			sf::Vector2f& velocity = ball.GetVelocity();
-			velocity.y = -velocity.y;
-			ball.SetVelocity(velocity);
-
-			break;
+	// Update all balls
+	for (auto it = balls.begin(); it != balls.end();) {
+		it->Update(deltaTime, lives);
+		if (!it->IsActive()) it = balls.erase(it);
+		else ++it;
+	}
+	// Check if all balls are inactive
+	bool allBallsInactive = true;
+	for (const auto& ball : balls) {
+		if (ball.IsActive()) allBallsInactive = false;
+	}
+	if (allBallsInactive && !balls.empty()) {
+		lives--;
+		balls[0].Reset();
+	}
+	// Brick collisions
+	for (auto& brick : bricks) {
+		if (!brick.IsActive()) continue;
+		for (auto& ball : balls) {
+			if (ball.IsActive() && ball.GetBounds().intersects(brick.GetBounds())) {
+				int points = brick.hit();
+				score += points;
+				if (points > 0) { // Brick destroyed
+					float x = brick.GetBounds().left + brick.GetBounds().width / 2;
+					float y = brick.GetBounds().top + brick.GetBounds().height / 2;
+					SpawnPowerUp(x, y);
+				}
+				sf::Vector2f velocity = ball.GetVelocity();
+				velocity.y = -velocity.y;
+				ball.SetVelocity(velocity);
+				break;
+			}
 		}
+	}
+	// Update power-ups
+	for (auto it = powerUps.begin(); it != powerUps.end();) {
+		it->Update(deltaTime, paddle, *this);
+		if (!it->IsActive()) it = powerUps.erase(it);
+		else ++it;
+	}
+	// Revert paddle size after 10 seconds
+	if (paddleExpanded && powerUpTimer.getElapsedTime().asSeconds() > 10.f) {
+		paddle.SetScale(paddle.GetScale().x,paddle.GetScale().y);
+		paddleExpanded = false;
 	}
 	bool allBrickIsDestroyed = true;
 	for (const auto& brick : bricks)
@@ -127,10 +158,10 @@ void Game::Render()
 	window.draw(backgroudSprite2);
 	window.draw(overlay);
 	paddle.Render(window);
-	ball.Render(window);
-	for (const auto& brick : bricks) {
-		brick.Draw(window);
-	}
+
+	for (const Ball& ball : balls) ball.Render(window); // Updated for multiple balls
+	for (const auto& brick : bricks) brick.Draw(window);
+	for (const auto& powerUp : powerUps) powerUp.Draw(window); // Added
 	window.draw(scoreText);
 	window.draw(livesText);
 	if (state != State::PLAYING) {
@@ -160,6 +191,13 @@ int Game::GetScore() const
 State Game::GetGameState() const
 {
 	return State();
+}
+
+void Game::SpawnPowerUp(float x, float y) {
+	if (rand() % 5 == 0) { // 20% chance
+		PowerUpType type = (rand() % 2 == 0) ? ExpandPaddle : MultiBall;
+		powerUps.emplace_back(x, y, type);
+	}
 }
 
 void Game::InitializeBricks() {

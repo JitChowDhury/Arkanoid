@@ -1,9 +1,7 @@
 #include "Game.h"
-
-int main()
-{
-	std::unique_ptr<Game> game = std::make_unique<Game>();
-	game->Run();
-	
-
+int main() {
+    srand(time(nullptr));
+    Game game;
+    game.Run();
+    return 0;
 }

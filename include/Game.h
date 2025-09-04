@@ -1,5 +1,7 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "PowerUp.h"
 #include "paddle.h"
 #include "Ball.h"
 #include "Brick.h"
@@ -30,11 +32,14 @@ private:
 
 	
 	Paddle paddle;
-	Ball ball;
+	std::vector<Ball> balls; 
 	std::vector<Brick> bricks;
+	std::vector<PowerUp> powerUps;
 	State state;
 	
 public:
+	sf::Clock powerUpTimer;
+	bool paddleExpanded = false;
 	Game();
 	void Update();
 	void HandleEvent();
@@ -43,5 +48,8 @@ public:
 	void InitializeBricks();
 	int GetScore() const;
 	State GetGameState() const;
+	void SpawnPowerUp(float x, float y); 
+	Paddle& GetPaddle() { return paddle; } 
+	std::vector<Ball>& GetBalls() { return balls; } 
 
 };
