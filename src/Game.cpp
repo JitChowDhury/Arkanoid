@@ -173,7 +173,9 @@ void Game::InitializeBricks() {
 	float offsetX = (1024.f - (cols * (width + 5.f) - 5.f)) / 2;
 	for (int row = 0; row < rows; ++row) {
 		for (int col = 0; col < cols; ++col) {
-			Brick::BrickType type = (row >= 6) ? Brick::BrickType::Strong : Brick::BrickType::Standard;
+			Brick::BrickType type = (row >= 2)
+				? ((row >= 4) ? ((row>=6)? Brick::BrickType::Standard: Brick::BrickType::Purple) : Brick::BrickType::Green)
+				: Brick::BrickType::Strong;
 			bricks.emplace_back(col * (width + 5.f) + offsetX, row * (height + 5.f),type,
 				width, height, true, scaleX, scaleY);
 

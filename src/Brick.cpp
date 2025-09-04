@@ -2,7 +2,10 @@
 
 sf::Texture Brick::standardTexture;
 sf::Texture Brick::strongTexture;
+sf::Texture Brick::purpleTexture;
+sf::Texture Brick::greenTexture;
 sf::Texture Brick::strongDamagedTexture;
+sf::Texture Brick::purpleDamagedTexture;
 
 Brick::Brick(float x, float y, BrickType t, float width, float height, bool useSprite, float scaleX, float scaleY)
     : active(true), type(t), hitPoints(0), points(0)
@@ -17,17 +20,38 @@ Brick::Brick(float x, float y, BrickType t, float width, float height, bool useS
         if (strongDamagedTexture.getSize().x == 0)
             strongDamagedTexture.loadFromFile("assets/textures/brick_strong_damaged.png");
 
+        if (purpleTexture.getSize().x == 0)
+            purpleTexture.loadFromFile("assets/textures/brick_standard_purple.png");
+
+        if (greenTexture.getSize().x == 0)
+            greenTexture.loadFromFile("assets/textures/brick_standard_green.png");
+
+        if (purpleDamagedTexture.getSize().x == 0)
+            purpleDamagedTexture.loadFromFile("assets/textures/brick_standard_purple_damaged.png");
+
         switch (type) {
         case BrickType::Standard:
             brickSprite.setTexture(standardTexture);
             hitPoints = 1;
-            points = 10;
+            points = 5;
             break;
         case BrickType::Strong:
             brickSprite.setTexture(strongTexture);
-            hitPoints = 2;
-            points = 20;
+            hitPoints = 3;
+            points = 10;
             break;
+        case BrickType::Purple:
+            brickSprite.setTexture(purpleTexture);
+            hitPoints = 2;
+            points = 7;
+            break;
+        case BrickType::Green:
+            brickSprite.setTexture(greenTexture);
+            hitPoints = 1;
+            points = 5;
+            break;
+
+
         }
 
         brickSprite.setPosition(x, y);
@@ -61,9 +85,13 @@ int Brick::hit()
 	if (hitPoints > 0) {
 		hitPoints--;
 
-		if (type == BrickType::Strong && hitPoints == 1)
+		if (type == BrickType::Strong && hitPoints == 2)
 		{
 			brickSprite.setTexture(strongDamagedTexture, true);
+		}
+		if (type == BrickType::Purple && hitPoints == 1)
+		{
+			brickSprite.setTexture(purpleDamagedTexture, true);
 		}
 		if (hitPoints == 0) {
 			active = false;

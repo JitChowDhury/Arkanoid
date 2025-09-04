@@ -7,12 +7,17 @@ public:
 	{
 		Standard,
 		Strong,
+		Purple,
+		Green,
 	};
 private:
 	sf::Sprite brickSprite;
 	static sf::Texture standardTexture;
+	static sf::Texture purpleTexture;
+	static sf::Texture greenTexture;
 	static sf::Texture strongTexture;
 	static sf::Texture strongDamagedTexture;
+	static sf::Texture purpleDamagedTexture;
 	bool active;
 	BrickType type;
 	int hitPoints;
