@@ -60,11 +60,11 @@ void Paddle::HandleEvents(float dt)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		paddleSprite.move(700.f * dt, 0.f);
+		paddleSprite.move(450.f * dt, 0.f);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		paddleSprite.move(-700.f * dt, 0.f);
+		paddleSprite.move(-450.f * dt, 0.f);
 	}
 }
 
@@ -124,4 +124,15 @@ void Paddle::SetScaleFactor(float factor)
 	float scaleY = (baseHeight * factor) / paddleFrames[0].getSize().y;
 
 	paddleSprite.setScale(scaleX, scaleY);
+}
+
+void Paddle::ResetPosition(sf::RenderWindow& window)
+{
+	float paddleWidth = paddleSprite.getGlobalBounds().width;
+	float paddleHeight = paddleSprite.getGlobalBounds().height;
+
+	float x = window.getSize().x / 2.f - paddleWidth / 2.f;
+	float y = window.getSize().y - paddleHeight - 20.f;
+
+	paddleSprite.setPosition(x, y);
 }

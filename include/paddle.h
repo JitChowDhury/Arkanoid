@@ -33,5 +33,6 @@ public:
 	sf::Vector2f GetScale();
 	void SetSprite();
 	void SetScaleFactor(float factor);
+	void ResetPosition(sf::RenderWindow& window);
 
 };

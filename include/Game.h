@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include "PowerUp.h"
 #include "paddle.h"
@@ -30,6 +31,14 @@ private:
 	sf::Text livesText;
 	sf::Text gameOverText;
 
+	sf::SoundBuffer brickHitBuffer1;
+	sf::SoundBuffer brickHitBuffer2;
+
+	sf::Sound brickHitSound1;
+	sf::Sound brickHitSound2;
+
+	sf::Music backgroundMusic;
+
 	
 	Paddle paddle;
 	std::vector<Ball> balls; 
@@ -51,5 +60,5 @@ public:
 	void SpawnPowerUp(float x, float y); 
 	Paddle& GetPaddle() { return paddle; } 
 	std::vector<Ball>& GetBalls() { return balls; } 
-
+	void RestartGame();
 };

@@ -51,7 +51,7 @@ void Ball::Update(float dt, int& lives)
 		ballVelocity.y = std::abs(ballVelocity.y); // Bounce down
 	}
 	if (ballBounds.top + ballBounds.height > 768) {
-		ballSprite.setPosition(ballStartPos); // Reset
+		Reset();
 		lives--;
 		ballVelocity = sf::Vector2f(-150.f, -150.f);
 	}
@@ -67,7 +67,22 @@ void Ball::Update(float dt, int& lives)
 }
 
 void Ball::Reset() {
-	ballSprite.setPosition(ballStartPos);
+	sf::Vector2f paddlePos = paddle->GetPosition();
+	sf::FloatRect paddleBounds = paddle->GetGlobalBounds();
+
+	float paddleCenterX = paddlePos.x + paddleBounds.width / 2.f;
+	float paddleTopY = paddlePos.y;
+
+	sf::FloatRect bounds = ballSprite.getLocalBounds();
+	ballSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+	// Correct placement above paddle
+	sf::Vector2f newPos(paddleCenterX, paddleTopY - bounds.height / 2.f);
+	ballSprite.setPosition(newPos);
+
+	
+	ballStartPos = newPos;
+
 	ballVelocity = sf::Vector2f(-150.f, -150.f);
 	active = true;
 }
