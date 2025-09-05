@@ -63,7 +63,7 @@ void Game::Update()
 		backgroudSprite2.setPosition(backgroudSprite.getPosition().x + backgroundTexture.getSize().x, 0);
 
 	paddle.HandleEvents(deltaTime);
-	paddle.Update(WINDOW_WIDTH);
+	paddle.Update(WINDOW_WIDTH,deltaTime);
 	// Update all balls
 	for (auto it = balls.begin(); it != balls.end();) {
 		it->Update(deltaTime, lives);
@@ -106,7 +106,7 @@ void Game::Update()
 	}
 	// Revert paddle size after 10 seconds
 	if (paddleExpanded && powerUpTimer.getElapsedTime().asSeconds() > 10.f) {
-		paddle.SetScale(paddle.GetScale().x,paddle.GetScale().y);
+		paddle.SetScaleFactor(1.0f);   // back to normal size
 		paddleExpanded = false;
 	}
 	bool allBrickIsDestroyed = true;

@@ -4,29 +4,47 @@
 
 Paddle::Paddle(sf::RenderWindow& window)
 {
-	if (!paddleTexture.loadFromFile("assets/textures/player.png"))
+	std::vector<std::string> textureFiles = {
+	"assets/textures/player.png",
+	"assets/textures/paddleAnim1.png",
+	"assets/textures/paddleAnim2.png"
+	};
+
+	for (auto& file : textureFiles)
 	{
-		std::cout << "Error Loading Paddle Sprite" << std::endl;
+		sf::Texture tex;
+		if (!tex.loadFromFile(file))
+		{
+			std::cout << "Error loading texture: " << file << std::endl;
+		}
+		paddleFrames.push_back(tex);
 	}
+
+	paddleSprite.setTexture(paddleFrames[0]);
+
+	//if (!paddleTexture.loadFromFile("assets/textures/player.png"))
+	//{
+	//	std::cout << "Error Loading Paddle Sprite" << std::endl;
+	//}
 	if (!paddleLargeTexture.loadFromFile("assets/textures/paddleLarge.png"))
 	{
 		std::cout << "Error Loading Paddle Sprite" << std::endl;
 	}
-	paddleSprite.setTexture(paddleTexture);
+	
 	
 	float desiredWidth = 170.f;  
 	float desiredHeight = 50.f;   
 
-	float scaleX = desiredWidth / paddleTexture.getSize().x;
-	float scaleY = desiredHeight / paddleTexture.getSize().y;
+	float scaleX = desiredWidth / paddleFrames[0].getSize().x;
+	float scaleY = desiredHeight / paddleFrames[0].getSize().y;
 	
 
 	paddleSprite.setScale(scaleX, scaleY);
 	std::cout << "Scale: " << scaleX << " " << scaleY;
 
 	//acutual width after scale
-	float paddleWidth = paddleTexture.getSize().x * scaleX;
-	float paddleHeight = paddleTexture.getSize().y * scaleY;
+	float paddleWidth = paddleFrames[0].getSize().x * scaleX;
+	float paddleHeight = paddleFrames[0].getSize().y * scaleY;
 
 	// position centered horizontally, a bit above bottom
 	float x = window.getSize().x / 2.f - paddleWidth / 2.f;
@@ -39,6 +57,7 @@ Paddle::Paddle(sf::RenderWindow& window)
 
 void Paddle::HandleEvents(float dt)
 {
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		paddleSprite.move(700.f * dt, 0.f);
@@ -51,8 +70,20 @@ void Paddle::HandleEvents(float dt)
 
 
 
-void Paddle::Update(int windowWidth)
+void Paddle::Update(int windowWidth,float dt)
 {
+	// animate
+	animationTimer += dt;
+	if (animationTimer >= frameDuration)
+	{
+		animationTimer = 0.f;
+		currentFrame = (currentFrame + 1) % paddleFrames.size();
+		paddleSprite.setTexture(paddleFrames[currentFrame], true);
+	}
+
+
+
+
 	sf::Vector2f pos = paddleSprite.getPosition();
 	float width = paddleSprite.getGlobalBounds().width;
 	if (pos.x < 5)paddleSprite.setPosition(5, pos.y);
@@ -83,4 +114,14 @@ sf::Vector2f Paddle::GetScale()
 void Paddle::SetSprite()
 {
 	paddleSprite.setTexture(paddleLargeTexture, true);
+}
+
+void Paddle::SetScaleFactor(float factor)
+{
+	currentScaleFactor = factor;
+
+	float scaleX = (baseWidth * factor) / paddleFrames[0].getSize().x;
+	float scaleY = (baseHeight * factor) / paddleFrames[0].getSize().y;
+
+	paddleSprite.setScale(scaleX, scaleY);
 }

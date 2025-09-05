@@ -12,7 +12,7 @@ PowerUp::PowerUp(float x, float y, PowerUpType t) : type(t) {
     }
 
     if (!texture.loadFromFile(textureFile)) {
-        // Handle error: maybe fallback to a default texture
+       
     }
     sprite.setTexture(texture);
     sprite.setScale(0.350515f, 0.390625427f);
@@ -32,7 +32,7 @@ void PowerUp::Update(float dt, Paddle& paddle, Game& game) {
 
 void PowerUp::Apply(Game& game) {
     if (type == ExpandPaddle && !game.paddleExpanded) {
-        game.GetPaddle().SetSprite();
+        game.GetPaddle().SetScaleFactor(1.5f);
         game.paddleExpanded = true;
         game.powerUpTimer.restart();
     }
