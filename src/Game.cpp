@@ -2,7 +2,7 @@
 
 Game::Game()
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Arkanoid"),
-    paddle(window), deltaTime(0.f), score(0), lives(2), state(State::PLAYING), scrollSpeed(100.f)
+    paddle(window), deltaTime(0.f), score(0), lives(100), state(State::PLAYING), scrollSpeed(100.f)
 {
     balls.emplace_back(&paddle);
     window.setFramerateLimit(60);

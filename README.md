@@ -34,9 +34,7 @@ Control the paddle, bounce the ball, and break all the bricks to win!
 
 ## 📸 Screenshots
 
-<p align="center">
-  🚧 Coming Soon 🚧  
-</p>
+![alt text](ReadmeGIF/screenshot.gif)
 
 ---
 
