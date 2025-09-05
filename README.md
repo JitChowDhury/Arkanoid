@@ -14,9 +14,18 @@
 A **classic Arkanoid/Breakout clone** built using **C++17** and **SFML**.  
 Control the paddle, bounce the ball, and break all the bricks to win!
 
-✨ Features:
+✨ Current Features Implemented:
 
-- Smooth paddle & ball physics
+- ✅ Paddle movement (smooth left & right)
+- ✅ Ball physics (bouncing, velocity control)
+- ✅ Paddle–ball collision with realistic angle reflection
+- ✅ Wall & bottom collision detection
+- ✅ Lives system (ball reset when lost, game over when lives = 0)
+- ✅ Restart system (press `R` to reset game state)
+- ✅ Score system (points for breaking bricks)
+
+🚧 Planned Features:
+
 - Multiple levels with increasing difficulty
 - Power-ups (expand paddle, extra balls, etc.)
 - Retro-inspired visuals & sound effects
@@ -34,16 +43,30 @@ Control the paddle, bounce the ball, and break all the bricks to win!
 ## 🛠️ Tech Stack
 
 - **Language:** C++17
-- **Library:** [SFML](https://www.sfml-dev.org/) (Simple and Fast Multimedia Library)
+- **Library:** [SFML](https://www.sfml-dev.org/)
 - **IDE:** Visual Studio / CLion
 
 ---
 
-## 🚀 Getting Started
+## 🔄 Game Flow
 
-### 1️⃣ Clone the Repository
+```mermaid
 
-```bash
-git clone https://github.com/JitChowDhury/Arkanoid.git
-cd Arkanoid
+   Start → Init Window + Objects
+      ↓
+   Main Loop
+      ↓
+ ┌── Handle Events (input, quit, restart)
+ │
+ ├── Update (if playing)
+ │     ├─ Move Paddle
+ │     ├─ Update Ball
+ │     │     ├─ Bounce walls/paddle
+ │     │     ├─ Lose life if fall
+ │     │     └─ Break bricks → Score++
+ │     └─ Check win/loss conditions
+ │
+ └── Render (draw everything)
+      ↓
+     Loop back
 ```
