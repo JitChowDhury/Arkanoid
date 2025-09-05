@@ -51,22 +51,20 @@ Control the paddle, bounce the ball, and break all the bricks to win!
 ## 🔄 Game Flow
 
 ```mermaid
+flowchart TD
+    A[Start Game] --> B[Initialize Window, Paddle, Ball, Bricks]
+    B --> C[Game Loop]
 
-   Start → Init Window + Objects
-      ↓
-   Main Loop
-      ↓
- ┌── Handle Events (input, quit, restart)
- │
- ├── Update (if playing)
- │     ├─ Move Paddle
- │     ├─ Update Ball
- │     │     ├─ Bounce walls/paddle
- │     │     ├─ Lose life if fall
- │     │     └─ Break bricks → Score++
- │     └─ Check win/loss conditions
- │
- └── Render (draw everything)
-      ↓
-     Loop back
+    C -->|Handle Input| D[Paddle Movement]
+    C -->|Update| E[Ball Movement & Physics]
+    C -->|Update| F[Collision Detection]
+    F --> F1[Ball ↔ Walls]
+    F --> F2[Ball ↔ Paddle]
+    F --> F3[Ball ↔ Bricks → Score++]
+
+    C -->|Check State| G{Lives > 0?}
+    G -->|Yes| C
+    G -->|No| H[Game Over Screen]
+
+    H -->|Press R| A
 ```
